@@ -777,26 +777,26 @@
 
                 <form class="quote-form" id="quoteForm" novalidate>
                     <div class="form-group">
-                        <label for="q-nome">Nome completo *</label>
+                        <label for="q-nome">Nome *</label>
                         <input type="text" id="q-nome" name="nome" placeholder="Seu nome" required>
                         <div class="form-error" id="err-nome"></div>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="q-telefone">Telefone / WhatsApp *</label>
                         <input type="tel" id="q-telefone" name="telefone" placeholder="(92) 99999-9999" required>
                         <div class="form-error" id="err-telefone"></div>
+                    </div> -->
+
+                    <div class="form-group">
+                        <label for="q-origem">Origem *</label>
+                        <input type="text" id="q-origem" name="origem" placeholder="Ex: São Paulo, Manaus" required>
+                        <div class="form-error" id="err-origem"></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="q-email">E-mail *</label>
-                        <input type="email" id="q-email" name="email" placeholder="seuemail@exemplo.com" required>
-                        <div class="form-error" id="err-email"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="q-destino">Destino desejado *</label>
-                        <input type="text" id="q-destino" name="destino" placeholder="Ex: Cancún, México" required>
+                        <label for="q-destino">Destino *</label>
+                        <input type="text" id="q-destino" name="destino" placeholder="Ex: Porto Alegre, Rio de Janeiro" required>
                         <div class="form-error" id="err-destino"></div>
                     </div>
 
@@ -814,9 +814,15 @@
                         <input type="number" id="q-passageiros" name="passageiros" min="1" placeholder="Ex: 2">
                     </div>
 
+                    <div class="form-group">
+                        <label for="q-bagagem">Bagagem 23kg</label>
+                        <input type="text" id="q-bagagem" name="bagagem" placeholder="Ex: 1" required>
+                        <div class="form-error" id="err-bagagem"></div>
+                    </div>
+
                     <div class="form-group full-width">
-                        <label for="q-mensagem">Mensagem / Observações</label>
-                        <textarea id="q-mensagem" name="mensagem" placeholder="Conte um pouco mais sobre a viagem que você deseja..."></textarea>
+                        <label for="q-mensagem">Observações</label>
+                        <textarea id="q-mensagem" name="mensagem" placeholder="Ex: Minha bagagem despachada é somente na volta..."></textarea>
                     </div>
 
                     <div class="quote-status" id="quoteStatus"></div>
@@ -825,9 +831,9 @@
                         <button type="button" class="btn-quote btn-quote-whatsapp" id="btnWhatsapp">
                             💬 Enviar via WhatsApp
                         </button>
-                        <button type="button" class="btn-quote btn-quote-email" id="btnEmail">
+                        <!-- <button type="button" class="btn-quote btn-quote-email" id="btnEmail">
                             📧 Enviar por E-mail
-                        </button>
+                        </button> -->
                     </div>
                 </form>
             </div>
@@ -1069,16 +1075,17 @@
             var fields = {
                 nome: document.getElementById('q-nome'),
                 telefone: document.getElementById('q-telefone'),
-                email: document.getElementById('q-email'),
+                origem: document.getElementById('q-origem'),
                 destino: document.getElementById('q-destino'),
                 data: document.getElementById('q-data'),
                 data2: document.getElementById('q-data2'),
                 passageiros: document.getElementById('q-passageiros'),
+                bagagem: document.getElementById('q-bagagem'),
                 mensagem: document.getElementById('q-mensagem')
             };
 
             function clearErrors() {
-                ['nome', 'telefone', 'email', 'destino'].forEach(function (key) {
+                ['nome', 'origem', 'destino'].forEach(function (key) {
                     var el = document.getElementById('err-' + key);
                     if (el) el.textContent = '';
                 });
@@ -1093,15 +1100,20 @@
                     valid = false;
                 }
 
-                var telefoneDigits = fields.telefone.value.replace(/\D/g, '');
-                if (telefoneDigits.length < 10) {
-                    document.getElementById('err-telefone').textContent = 'Informe um telefone válido com DDD.';
-                    valid = false;
-                }
+                // var telefoneDigits = fields.telefone.value.replace(/\D/g, '');
+                // if (telefoneDigits.length < 10) {
+                //     document.getElementById('err-telefone').textContent = 'Informe um telefone válido com DDD.';
+                //     valid = false;
+                // }
 
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailPattern.test(fields.email.value.trim())) {
-                    document.getElementById('err-email').textContent = 'Informe um e-mail válido.';
+                // var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                // if (!emailPattern.test(fields.email.value.trim())) {
+                //     document.getElementById('err-email').textContent = 'Informe um e-mail válido.';
+                //     valid = false;
+                // }
+
+                if (!fields.origem.value.trim()) {
+                    document.getElementById('err-origem').textContent = 'Informe a origem desejada.';
                     valid = false;
                 }
 
@@ -1120,16 +1132,16 @@
 
             function buildSummary() {
                 var lines = [
-                    'Nova solicitação de orçamento - Site Voar Passagens Aéreas',
+                    'Oi! Vim pelo site e quero solicitar um orçamento!',
                     '',
                     'Nome: ' + fields.nome.value.trim(),
-                    'Telefone: ' + fields.telefone.value.trim(),
-                    'E-mail: ' + fields.email.value.trim(),
+                    'Origem: ' + fields.origem.value.trim(),
                     'Destino: ' + fields.destino.value.trim()
                 ];
                 if (fields.data.value) lines.push('Data de IDA: ' + fields.data.value);
                 if (fields.data2.value) lines.push('Data de VOLTA: ' + fields.data2.value);
                 if (fields.passageiros.value) lines.push('Passageiros: ' + fields.passageiros.value);
+                if (fields.bagagem.value) lines.push('Bagagem 23kg: ' + fields.bagagem.value);
                 if (fields.mensagem.value.trim()) lines.push('Mensagem: ' + fields.mensagem.value.trim());
                 return lines.join('\n');
             }
