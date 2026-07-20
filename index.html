@@ -1036,6 +1036,11 @@
                     valid = false;
                 }
 
+                if (!fields.data.value.trim()) {
+                    document.getElementById('err-data').textContent = 'Informe a data de ida.';
+                    valid = false;
+                }
+
                 return valid;
             }
 
